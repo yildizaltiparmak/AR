@@ -36,4 +36,4 @@ React Native: Uygulama geliştirme için kullanılan framework.
 Expo: React Native projeleri için geliştirilmiş bir araçtır, uygulamaların hızlı bir şekilde geliştirilmesini sağlar.
 JavaScript ve JSON: Uygulama içi veri yönetimi için kullanılan teknolojiler.
 Trello Bağlantısı
-Proje ile ilgili daha fazla bilgiye ve yönetim süreçlerine buradan [erişebilirsiniz].(https://trello.com/b/0OzTegNJ/ymgk)
+[Trello Board](https://trello.com/b/0OzTegNJ/ymgk)
