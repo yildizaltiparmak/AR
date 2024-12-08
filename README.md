@@ -24,24 +24,11 @@ Proje panosuna ve geliştirme sürecine buradan göz atabilirsiniz:
 ## 📄 Dokümantasyon
 
 Projenin tasarımı, özellikleri ve uygulama hakkında detaylı bilgiye ulaşmak için projeye ait dokümantasyona şu bağlantıdan ulaşabilirsiniz:  
-[Proje Dokümantasyonu](#)
+[Proje Dokümantasyonu](https://github.com/yildizaltiparmak/AR/blob/main/Y%C4%B1ld%C4%B1z_Alt%C4%B1parmak_210542014_Raporlama.pdf)
 
 ## 🎥 Proje Tanıtım Videosu
 
 Proje tanıtım videosunu YouTube üzerinden izleyerek uygulama hakkında daha fazla bilgi edinebilirsiniz:  
 [Proje Tanıtım Videosu](#)
 
-## 🌐 Web Sayfası
 
-Proje hakkında daha fazla etkileşimli bilgi ve kaynaklara ulaşabileceğiniz özel bir web sayfası mevcuttur. Sayfayı keşfetmek için şu bağlantıyı ziyaret edebilirsiniz:  
-[Proje Web Sayfası](#)
-
-## 📥 APK İndir
-
-APK dosyasını aşağıdaki bağlantıdan indirebilirsiniz:  
-[YMGK APK İndir](#)
-
-## 📄 Lisans
-
-Bu proje, **Apache License 2.0** lisansı altında lisanslanmıştır.  
-Daha fazla detay için LICENSE dosyasına bakabilirsiniz.
