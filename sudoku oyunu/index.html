@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Oyunu</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti"></script>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Sudoku Oyunu</h1>
+        <div id="board">
+            <!-- Sudoku grid will be dynamically generated here -->
+        </div>
+        <div id="controls">
+            <button onclick="newGame()">Yeni Oyun</button>
+            <button onclick="howToPlay()">Nasıl Oynanır?</button>
+            <button onclick="nextLevel()">Seviyeyi Artır</button>
+        </div>
+    </div>
+
+    <div id="instructions" class="modal">
+        <div class="modal-content">
+            <h2>Nasıl Oynanır?</h2>
+            <p>
+                1-9 arasındaki sayıları sudoku kutularına yerleştirin. Aynı satırda ve sütunda tekrar etmemelidir.
+                <br>
+                3x3 küçük karecikler içerisinde de 1-9 arasında birer kez kullanılmalıdır.
+            </p>
+            <button onclick="closeModal()">Kapat</button>
+        </div>
+    </div>
+
+    <div id="congratulations" class="modal">
+        <div class="modal-content">
+            <h2>TEBRİKLER!</h2>
+            <p>Sudokuyu başarıyla çözdünüz!</p>
+            <button onclick="closeCongratulations()">Kapat</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

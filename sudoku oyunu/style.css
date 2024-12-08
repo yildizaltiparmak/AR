@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#game-container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#board {
+    display: grid;
+    gap: 5px;
+    margin: 20px 0;
+    justify-content: center;  /* Kutuları yatayda ortala */
+    align-items: center;      /* Kutuları dikeyde ortala */
+}
+
+#board input {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Renkli kareler */
+#board input:nth-child(3n+1) {
+    background-color: #FFDDC1; /* Pembe */
+}
+
+#board input:nth-child(3n+2) {
+    background-color: #FFABAB; /* Koyu Pembe */
+}
+
+#board input:nth-child(3n+3) {
+    background-color: #FFC3A0; /* Açık Pembe */
+}
+
+#board input:nth-child(3n+4) {
+    background-color: #FF677D; /* Kırmızımsı */
+}
+
+#board input:nth-child(3n+5) {
+    background-color: #D4A5A5; /* Soluk Kırmızı */
+}
+
+#board input:nth-child(3n+6) {
+    background-color: #392F5A; /* Mor */
+}
+
+#board input:nth-child(3n+7) {
+    background-color: #6A0572; /* Koyu Mor */
+}
+
+#board input:nth-child(3n+8) {
+    background-color: #D4A5A5; /* Soluk Kırmızı */
+}
+
+#board input:nth-child(3n+9) {
+    background-color: #FFACAC; /* Açık Kırmızı */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    text-align: center;
+}
+
+.modal-content button {
+    margin-top: 20px;
+}

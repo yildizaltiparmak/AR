@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Geometrik Şekil Oyunu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Geometrik Şekil Oyunu</h1>
+        <canvas id="canvas" width="500" height="500"></canvas>
+        <div id="questionArea">
+            <p>Rastgele boyanan karelerin sayısını tahmin edin:</p>
+            <input type="number" id="answer" placeholder="Cevabınızı girin">
+            <button id="submitAnswer">Cevapla</button>
+        </div>
+        <div id="feedback"></div>
+    </div>
+
+    <!-- Ses dosyalarını buraya ekliyoruz (Ses dosyalarını .mp3 veya .wav uzantılarıyla eklemelisiniz) -->
+    <audio id="correctSound" src="sounds/correct-6033.mp3"></audio>
+    <audio id="wrongSound" src="sounds/buzzer-or-wrong-answer-20582.mp3"></audio>
+    <audio id="timeUpSound" src="sounds/oven-timer-complete-43537.mp3"></audio>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

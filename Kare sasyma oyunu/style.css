@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e0f7fa;
+    text-align: center;
+}
+
+.container {
+    margin: 0 auto;
+    width: 80%;
+}
+
+h1 {
+    color: #00796b;
+}
+
+canvas {
+    border: 1px solid #000;
+    background-color: #ffffff;
+    margin-top: 20px;
+}
+
+#inputArea, #questionArea {
+    margin-top: 20px;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #00796b;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #004d40;
+}
+
+/* Confetti animation */
+.confetti-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Confetti'nin altında kalan öğelerle etkileşim sağlasın */
+    z-index: 9999; /* En üstte olması için */
+    animation: confettiAnimation 2s ease-out forwards;
+}
+
+/* Confetti animation keyframes */
+@keyframes confettiAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+/* Shake animation for wrong answer */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    50% {
+        transform: translateX(10px);
+    }
+    75% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+canvas.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Styling for feedback */
+#feedback {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #00796b;
+}
+
+#feedback span {
+    font-weight: bold;
+}
+
+/* Styling for the answer input */
+#answer {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+    margin-top: 10px;
+}
