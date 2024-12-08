@@ -1,39 +1,47 @@
-YMGK - Mobil Eğitim Uygulaması
-Proje Tanımı
-YMGK, çocukların matematiksel becerilerini geliştirmek için tasarlanmış bir mobil eğitim uygulamasıdır. Uygulama, çocukların sayılarla ilgili becerilerini geliştirirken aynı zamanda eğlenceli oyunlar ile dikkat, hız ve problem çözme yeteneklerini de artırmayı amaçlar. Her oyun modülü, çocukların gelişim seviyelerine göre tasarlanmış ve eğlenceli bir öğrenme deneyimi sunmaktadır.
+# YMGK - Mobil Eğitim Uygulaması
 
-İçindekiler
-Oyunlar
-Uygulama Kurulumu
-Kullanıcı Yönergeleri
-Teknolojik Gereksinimler
-Trello Bağlantısı
-Oyunlar
-YMGK uygulaması, çocukların farklı matematiksel beceriler kazanmalarına yardımcı olacak dört temel oyun modülünü içerir. Bu modüller şunlardır:
+**YMGK**, çocukların matematiksel becerilerini geliştirmeyi hedefleyen eğlenceli bir mobil eğitim uygulamasıdır. Uygulama, çeşitli oyun modülleri ile çocuklara matematiksel işlemleri öğretirken, aynı zamanda hız, dikkat, mantıklı düşünme gibi bilişsel becerileri de geliştirmeyi amaçlar. Her oyun, çocukların yaşlarına uygun seviyelerde tasarlanmış ve eğlenceli bir öğrenme deneyimi sunar.
 
-Sudoku Oyunu: Çocuklar, Sudoku mantığı ile sayılar arasındaki ilişkileri öğrenirken, aynı zamanda mantıklı düşünme becerilerini geliştirirler.
-Şarkı Yarışması Oyunu: Bu oyun, çocukların sayılar ve işlemlerle ilgili soruları çözmelerini sağlayan müzik temalı eğlenceli bir oyun modülüdür.
-Şekil Çizme Oyunu: Çocuklar geometrik şekilleri tanıyıp, çizim yaparak eğlenceli bir şekilde öğrenirler.
-Tren Oyunu: Sayıları tanıma ve işlem yapma konusunda çocukları eğlendiren bir tren yolculuğu oyunudur.
-Her oyun modülü, kullanıcıların yaşlarına ve becerilerine göre farklı seviyelere sahiptir. Oyunlar ilerledikçe zorluk seviyesi artar, böylece çocuklar gelişimlerini takip edebilir ve daha karmaşık problemleri çözerek öğrenmeye devam edebilirler.
+## 🚀 Proje Genel Bakış
 
-Uygulama Kurulumu
-Gereksinimler:
+- **Hedef Kitle**: Çocuklar
+- **Platform**: Mobil uygulama (iOS ve Android)
+- **Amaç**: Matematiksel becerileri eğlenceli bir şekilde geliştirmek ve çocukların öğrenme sürecini daha ilgi çekici hale getirmek.
 
-Uygulama, Android ve iOS platformlarında çalışacak şekilde geliştirilmiştir.
-Uygulama, internet bağlantısı gerektirebilir.
-Kurulum Adımları:
+## 📋 Temel Özellikler
 
-Android için: Google Play Store'dan YMGK uygulamasını indirip kurabilirsiniz.
-iOS için: App Store'dan YMGK uygulamasını indirip kurabilirsiniz.
-Kullanıcı Yönergeleri
-Ana Sayfa: Uygulama açıldığında, kullanıcılar "Önerilen Oyunlar" ve "Popüler İçerik" seçenekleriyle karşılaşır.
-Oyun Seçimi: Kullanıcılar, istedikleri oyun modülünü seçebilirler.
-Oyun Başlatma: Seçilen oyun modülü, kullanıcının oyun sürecine başlamasına olanak tanır.
-Sonuçlar ve Geri Bildirim: Oyunlar bitiminde, başarılar ve gelişim raporları kullanıcıya sunulur.
-Teknolojik Gereksinimler
-React Native: Uygulama geliştirme için kullanılan framework.
-Expo: React Native projeleri için geliştirilmiş bir araçtır, uygulamaların hızlı bir şekilde geliştirilmesini sağlar.
-JavaScript ve JSON: Uygulama içi veri yönetimi için kullanılan teknolojiler.
-Trello Bağlantısı
-[Trello Board](https://trello.com/b/0OzTegNJ/ymgk)
+- **Eğitici Oyunlar**: Matematiksel becerileri geliştiren, eğlenceli ve öğretici oyunlar.
+- **Çocuk Dostu Arayüz**: Renkli, sezgisel ve çocukların kolayca kullanabileceği bir tasarım.
+- **Güvenli ve Eğlenceli**: Çocukların güvenliğini ön planda tutarak tasarlanmış bir uygulama.
+- **Farklı Oyun Modülleri**: Sudoku, Şarkı Yarışması, Şekil Çizme ve Tren Oyunu gibi modüller.
+
+## 🛠 Proje Yönetimi
+
+Proje gelişimini ve süreçleri takip etmek için **Trello** kullanıyoruz.  
+Proje panosuna ve geliştirme sürecine buradan göz atabilirsiniz:  
+[Trello Panosu](https://trello.com/b/0OzTegNJ/ymgk)
+
+## 📄 Dokümantasyon
+
+Projenin tasarımı, özellikleri ve uygulama hakkında detaylı bilgiye ulaşmak için projeye ait dokümantasyona şu bağlantıdan ulaşabilirsiniz:  
+[Proje Dokümantasyonu](#)
+
+## 🎥 Proje Tanıtım Videosu
+
+Proje tanıtım videosunu YouTube üzerinden izleyerek uygulama hakkında daha fazla bilgi edinebilirsiniz:  
+[Proje Tanıtım Videosu](#)
+
+## 🌐 Web Sayfası
+
+Proje hakkında daha fazla etkileşimli bilgi ve kaynaklara ulaşabileceğiniz özel bir web sayfası mevcuttur. Sayfayı keşfetmek için şu bağlantıyı ziyaret edebilirsiniz:  
+[Proje Web Sayfası](#)
+
+## 📥 APK İndir
+
+APK dosyasını aşağıdaki bağlantıdan indirebilirsiniz:  
+[YMGK APK İndir](#)
+
+## 📄 Lisans
+
+Bu proje, **Apache License 2.0** lisansı altında lisanslanmıştır.  
+Daha fazla detay için LICENSE dosyasına bakabilirsiniz.
