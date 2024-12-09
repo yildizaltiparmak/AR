@@ -31,4 +31,7 @@ Projenin tasarımı, özellikleri ve uygulama hakkında detaylı bilgiye ulaşma
 Proje tanıtım videosunu YouTube üzerinden izleyerek uygulama hakkında daha fazla bilgi edinebilirsiniz:  
 [Proje Tanıtım Videosu](#)
 
+## 🌐 Web Sayfası
 
+Uygulama hakkında daha fazla bilgi ve etkileşimli içeriklere ulaşabileceğiniz proje web sayfasını keşfetmek için buraya tıklayın:  
+[Proje Web Sayfası](https://yildizaltiparmak.github.io/AR/)
