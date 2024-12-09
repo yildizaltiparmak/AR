@@ -1,0 +1,13 @@
+<resources>
+    <!-- Material Design tabanlı bir tema -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Uygulama seviyesinde temel renkler -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+</resources>
