@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yıldız Projesi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --dark-color: #1e1b4b;
+            --light-color: #f0f9ff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-color);
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 6rem 0;
+            color: white;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn-custom {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .badge-custom {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-star me-2"></i>
+                Yıldız Projesi
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projeler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Özellikler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#team">Ekip</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#games">Oyunlar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Yıldız Projesi</h1>
+                    <p class="lead mb-4 opacity-90">Yenilikçi çözümler ve modern teknolojilerle geliştirilen projelerimiz ile geleceği şekillendiriyoruz.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#projects" class="btn btn-custom btn-lg">Projeleri Keşfet</a>
+                        <a href="#features" class="btn btn-outline-light btn-lg">Özellikler</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070" 
+                         alt="Proje Görseli" 
+                         class="img-fluid rounded-4 shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="py-5" id="projects">
+        <div class="container">
+            <h2 class="text-center section-title">Projelerimiz</h2>
+            <div class="row g-4">
+                <!-- Oyun Projesi -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Eğitsel Oyunlar</h3>
+                        <p class="text-muted mb-4">Matematik, geometri ve problem çözme becerilerini geliştiren interaktif oyunlar.</p>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <span class="badge-custom">React Native</span>
+                            <span class="badge-custom">Oyun Geliştirme</span>
+                            <span class="badge-custom">Eğitim</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frontend Projesi -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Modern Web Arayüzü</h3>
+                        <p class="text-muted mb-4">Responsive tasarım ve modern UI/UX prensipleriyle geliştirilmiş web arayüzü.</p>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <span class="badge-custom">HTML5</span>
+                            <span class="badge-custom">CSS3</span>
+                            <span class="badge-custom">Bootstrap</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobil Uygulama -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Mobil Uygulama</h3>
+                        <p class="text-muted mb-4">Cross-platform mobil uygulama ile her platformda kusursuz deneyim.</p>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <span class="badge-custom">React Native</span>
+                            <span class="badge-custom">Mobile</span>
+                            <span class="badge-custom">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light" id="features">
+        <div class="container">
+            <h2 class="text-center section-title">Özellikler</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-mobile-alt feature-icon"></i>
+                        <h3 class="h4 mb-3">Responsive Tasarım</h3>
+                        <p class="text-muted">Tüm cihazlarda mükemmel görüntü ve kullanım deneyimi.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-code feature-icon"></i>
+                        <h3 class="h4 mb-3">Modern Teknolojiler</h3>
+                        <p class="text-muted">En güncel teknolojiler ve framework'ler ile geliştirme.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h3 class="h4 mb-3">Kullanıcı Odaklı</h3>
+                        <p class="text-muted">Kullanıcı deneyimini ön planda tutan tasarım yaklaşımı.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="py-5 bg-white" id="games">
+        <div class="container">
+            <h2 class="text-center section-title">Eğitsel Oyunlarımız</h2>
+            <div class="row g-4">
+                <!-- Telefon ve Mesaj Yarışması -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-mobile-alt fa-3x"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Telefon ve Mesaj Yarışması</h3>
+                        <p class="text-muted mb-4">Oyuncuların mesaj ve arama sayılarını doğru sıralamaya koyun. 5 farklı oyuncu ve gerçek istatistiklerle eğlenceli bir sıralama oyunu!</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge-custom">Sıralama</span>
+                            <span class="badge-custom">İstatistik</span>
+                            <span class="badge-custom">Analiz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Koordinat Sistemi -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-chart-line fa-3x"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Koordinat Sistemi</h3>
+                        <p class="text-muted mb-4">Koordinat düzleminde noktaları doğru yerlere yerleştirin. 10 farklı nokta ve otomatik çizgi oluşturma özelliğiyle geometri becerilerinizi geliştirin!</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge-custom">Geometri</span>
+                            <span class="badge-custom">Koordinat</span>
+                            <span class="badge-custom">Uzamsal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sihirli Kare -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-puzzle-piece fa-3x"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Sihirli Kare</h3>
+                        <p class="text-muted mb-4">3x3 karede sayıları öyle yerleştirin ki her satır, sütun ve çaprazın toplamı 15 olsun. İpucu sistemi ve kontrol özelliğiyle mantık oyunu!</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge-custom">Mantık</span>
+                            <span class="badge-custom">Matematik</span>
+                            <span class="badge-custom">Bulmaca</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tren Yolculuğu -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="fas fa-train fa-3x"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Tren Yolculuğu</h3>
+                        <p class="text-muted mb-4">4 durakta inen ve binen yolcuları takip edin. Matematik ve problem çözme becerilerinizi test edin!</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge-custom">Problem Çözme</span>
+                            <span class="badge-custom">Aritmetik</span>
+                            <span class="badge-custom">Takip</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+
+   
+
+    <!-- Footer -->
+    <footer class="py-5 bg-light">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4">
+                    <h5 class="mb-4">Yıldız Projesi</h5>
+                    <p class="text-muted">Modern teknolojiler ve yenilikçi çözümlerle geleceği şekillendiriyoruz.</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="mb-4">Hızlı Bağlantılar</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#home" class="text-muted text-decoration-none">Ana Sayfa</a></li>
+                        <li class="mb-2"><a href="#projects" class="text-muted text-decoration-none">Projeler</a></li>
+                        <li class="mb-2"><a href="#features" class="text-muted text-decoration-none">Özellikler</a></li>
+                        <li class="mb-2"><a href="#team" class="text-muted text-decoration-none">Ekip</a></li>
+                        <li class="mb-2"><a href="#games" class="text-muted text-decoration-none">Oyunlar</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="mb-4">İletişim</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>info@yildizprojesi.com</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i>+90 555 123 4567</li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>İstanbul, Türkiye</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="text-center text-muted">
+                <small>&copy; 2024 Yıldız Projesi. Tüm hakları saklıdır.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
