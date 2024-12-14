@@ -30,7 +30,7 @@ Projenin tasarımı, özellikleri ve uygulama hakkında detaylı bilgiye ulaşma
 ## 🎥 Proje Tanıtım Videosu
 
 Proje tanıtım videosunu YouTube üzerinden izleyerek uygulama hakkında daha fazla bilgi edinebilirsiniz:  
-[Proje Tanıtım Videosu](#)
+[Proje Tanıtım Videosu](https://youtu.be/n-NTq1ir0Gc?si=hnuqGwVNnX7jJWgX)
 
 ## 🌐 Web Sayfası
 
