@@ -25,11 +25,12 @@ Proje panosuna ve geliştirme sürecine buradan göz atabilirsiniz:
 
 Projenin tasarımı, özellikleri ve uygulama hakkında detaylı bilgiye ulaşmak için projeye ait dokümantasyona şu bağlantıdan ulaşabilirsiniz:  
 [Proje Dokümantasyonu](https://github.com/yildizaltiparmak/AR/blob/main/Y%C4%B1ld%C4%B1z_Alt%C4%B1parmak_210542014_Raporlama.pdf)
+[Drive Dökümanı].(https://docs.google.com/spreadsheets/d/11zdxbCXpA7t9ibzjcmD1NTUP9guf1w7D/edit?gid=1027327986#gid=1027327986)
 
 ## 🎥 Proje Tanıtım Videosu
 
 Proje tanıtım videosunu YouTube üzerinden izleyerek uygulama hakkında daha fazla bilgi edinebilirsiniz:  
-[Proje Tanıtım Videosu](#)
+[Proje Tanıtım Videosu](https://youtu.be/n-NTq1ir0Gc?si=hnuqGwVNnX7jJWgX)
 
 ## 🌐 Web Sayfası
 
