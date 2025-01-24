@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Animated } from 'react-native';
 
 const SettingsScreen = () => {
-  // 3x3'lük oyun tahtası
   const [board, setBoard] = useState([
     ['', '', ''],
     ['', '', ''],
     ['', '', '']
   ]);
-
   const [selectedCell, setSelectedCell] = useState(null);
+  const [usedNumbers, setUsedNumbers] = useState([]); // Kullanılmış sayılar
   const [hints, setHints] = useState(3);
+  const [level, setLevel] = useState(1);
+  const [animation] = useState(new Animated.Value(0));
 
-  // Oyun kuralları ve ipuçları
+  const animatedBackgroundColor = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#81D4FA', '#FFCDD2'], // Mavi ve pembe arası geçiş
+  });
+
   const rules = [
     "Her satırın toplamı 15 olmalı",
     "Her sütunun toplamı 15 olmalı",
@@ -21,173 +26,186 @@ const SettingsScreen = () => {
     "Her sayı bir kez kullanılmalı"
   ];
 
-  // Rastgele renk üretme fonksiyonu
-  const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
-  const getHint = () => {
-    if (hints > 0) {
-      // Boş hücreleri bul
-      const emptyCells = [];
-      board.forEach((row, i) => {
-        row.forEach((cell, j) => {
-          if (cell === '') {
-            emptyCells.push([i, j]);
-          }
-        });
-      });
-
-      if (emptyCells.length > 0) {
-        // Rastgele bir boş hücre seç
-        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        const correctNumbers = {
-          '0,0': '8', '0,1': '1', '0,2': '6',
-          '1,0': '3', '1,1': '5', '1,2': '7',
-          '2,0': '4', '2,1': '9', '2,2': '2'
-        };
-        
-        const newBoard = [...board];
-        newBoard[randomCell[0]][randomCell[1]] = correctNumbers[`${randomCell[0]},${randomCell[1]}`];
-        setBoard(newBoard);
-        setHints(hints - 1);
-      }
-    } else {
-      Alert.alert('İpucu Hakkı Bitti', 'Tüm ipucu haklarınızı kullandınız!');
-    }
-  };
-
   const handleCellPress = (row, col) => {
     setSelectedCell([row, col]);
   };
 
   const handleNumberInput = (number) => {
-    if (selectedCell) {
-      const [row, col] = selectedCell;
-      const newBoard = [...board];
-      newBoard[row][col] = number;
-      setBoard(newBoard);
+    if (!selectedCell) {
+      Alert.alert('Hata', 'Bir hücre seçmelisiniz!');
+      return;
     }
+
+    const [row, col] = selectedCell;
+    const newBoard = [...board];
+    const currentNumber = newBoard[row][col];
+
+    // Eğer hücrede zaten bir sayı varsa, eski sayıyı kullanılabilir hale getir
+    if (currentNumber !== '') {
+      setUsedNumbers(usedNumbers.filter((num) => num !== currentNumber));
+    }
+
+    // Eğer sayı daha önce kullanılmışsa uyar
+    if (usedNumbers.includes(number)) {
+      Alert.alert('Hata', 'Bu sayı zaten kullanıldı!');
+      return;
+    }
+
+    // Sayıyı hücreye yerleştir ve kullanılanlara ekle
+    newBoard[row][col] = number;
+    setBoard(newBoard);
+    setUsedNumbers([...usedNumbers, number]);
+
+    // Kazanma durumunu kontrol et
+    checkWin(newBoard);
   };
 
-  const checkWin = () => {
-    // Satır toplamları kontrolü
-    const rowSums = board.map(row => 
+  const checkWin = (currentBoard) => {
+    const rowSums = currentBoard.map((row) =>
       row.reduce((sum, cell) => sum + (parseInt(cell) || 0), 0)
     );
 
-    // Sütun toplamları kontrolü
-    const colSums = board[0].map((_, col) => 
-      board.reduce((sum, row) => sum + (parseInt(row[col]) || 0), 0)
+    const colSums = currentBoard[0].map((_, colIndex) =>
+      currentBoard.reduce((sum, row) => sum + (parseInt(row[colIndex]) || 0), 0)
     );
 
-    // Çapraz toplamlar kontrolü
-    const diagonal1 = board[0][0] + board[1][1] + board[2][2];
-    const diagonal2 = board[0][2] + board[1][1] + board[2][0];
+    const diagonal1 =
+      parseInt(currentBoard[0][0] || 0) +
+      parseInt(currentBoard[1][1] || 0) +
+      parseInt(currentBoard[2][2] || 0);
 
-    // Tüm sayıların kullanılıp kullanılmadığı kontrolü
-    const usedNumbers = board.flat().filter(cell => cell !== '');
-    const uniqueNumbers = new Set(usedNumbers);
+    const diagonal2 =
+      parseInt(currentBoard[0][2] || 0) +
+      parseInt(currentBoard[1][1] || 0) +
+      parseInt(currentBoard[2][0] || 0);
 
-    const isValid = 
-      rowSums.every(sum => sum === 15) &&
-      colSums.every(sum => sum === 15) &&
-      parseInt(diagonal1) === 15 &&
-      parseInt(diagonal2) === 15 &&
-      uniqueNumbers.size === 9;
+    const usedNumbersCount = currentBoard.flat().filter((cell) => cell !== '').length;
+
+    const isValid =
+      rowSums.every((sum) => sum === 15) &&
+      colSums.every((sum) => sum === 15) &&
+      diagonal1 === 15 &&
+      diagonal2 === 15 &&
+      usedNumbersCount === 9;
 
     if (isValid) {
-      Alert.alert('Tebrikler!', 'Bulmacayı başarıyla çözdünüz!');
-    } else {
-      Alert.alert('Tekrar Deneyin', 'Çözüm henüz doğru değil.');
+      completeLevel();
     }
+  };
+
+  const completeLevel = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false,
+    }).start(() => {
+      Animated.timing(animation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+      Alert.alert('Tebrikler!', `Seviye ${level} tamamlandı! 🎉`, [
+        {
+          text: 'Sonraki Seviye',
+          onPress: () => {
+            const newLevel = level + 1;
+            setLevel(newLevel);
+            setBoard([['', '', ''], ['', '', ''], ['', '', '']]);
+            setUsedNumbers([]);
+            setHints(3);
+          }
+        }
+      ]);
+    });
   };
 
   const resetGame = () => {
     setBoard([['', '', ''], ['', '', ''], ['', '', '']]);
     setSelectedCell(null);
+    setUsedNumbers([]);
     setHints(3);
+    setLevel(1);
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Sihirli Kare Bulmaca</Text>
-      
-      <View style={styles.rulesContainer}>
-        <Text style={styles.rulesTitle}>Oyun Kuralları:</Text>
-        {rules.map((rule, index) => (
-          <Text key={index} style={styles.ruleText}>• {rule}</Text>
-        ))}
-      </View>
+    <Animated.View style={[styles.container, { backgroundColor: animatedBackgroundColor }]}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.title}>Sihirli Kare Bulmaca</Text>
+        <Text style={styles.subtitle}>Seviye: {level}</Text>
 
-      <View style={styles.boardContainer}>
-        {board.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            {row.map((cell, colIndex) => (
-              <TouchableOpacity
-                key={colIndex}
-                style={[
-                  styles.cell,
-                  { backgroundColor: getRandomColor() }, // Hücrenin rengini rastgele yap
-                  selectedCell && selectedCell[0] === rowIndex && selectedCell[1] === colIndex
-                    ? styles.selectedCell
-                    : null
-                ]}
-                onPress={() => handleCellPress(rowIndex, colIndex)}
-              >
-                <Text style={styles.cellText}>{cell}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))}
-      </View>
+        <View style={styles.rulesContainer}>
+          <Text style={styles.rulesTitle}>Oyun Kuralları:</Text>
+          {rules.map((rule, index) => (
+            <Text key={index} style={styles.ruleText}>• {rule}</Text>
+          ))}
+        </View>
 
-      <View style={styles.numberPad}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(number => (
-          <TouchableOpacity
-            key={number}
-            style={styles.numberButton}
-            onPress={() => handleNumberInput(number.toString())}
-          >
-            <Text style={styles.numberText}>{number}</Text>
+        <View style={styles.boardContainer}>
+          {board.map((row, rowIndex) => (
+            <View key={rowIndex} style={styles.row}>
+              {row.map((cell, colIndex) => (
+                <TouchableOpacity
+                  key={colIndex}
+                  style={[
+                    styles.cell,
+                    selectedCell && selectedCell[0] === rowIndex && selectedCell[1] === colIndex
+                      ? styles.selectedCell
+                      : null
+                  ]}
+                  onPress={() => handleCellPress(rowIndex, colIndex)}
+                >
+                  <Text style={styles.cellText}>{cell}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.numberPad}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
+            <TouchableOpacity
+              key={number}
+              style={[
+                styles.numberButton,
+                usedNumbers.includes(number) ? styles.usedNumber : null
+              ]}
+              onPress={() => handleNumberInput(number.toString())}
+            >
+              <Text style={styles.numberText}>{number}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={resetGame}>
+            <Text style={styles.buttonText}>Yeniden Başla</Text>
           </TouchableOpacity>
-        ))}
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={getHint}>
-          <Text style={styles.buttonText}>İpucu ({hints})</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={checkWin}>
-          <Text style={styles.buttonText}>Kontrol Et</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.resetButton]} onPress={resetGame}>
-          <Text style={styles.buttonText}>Yeniden Başla</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+  },
+  content: {
     padding: 20,
+    alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
     marginBottom: 20,
   },
   rulesContainer: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#FFFFFF',
     padding: 15,
     borderRadius: 10,
     marginBottom: 20,
@@ -195,15 +213,12 @@ const styles = StyleSheet.create({
   rulesTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
   },
   ruleText: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
+    marginVertical: 2,
   },
   boardContainer: {
-    alignItems: 'center',
     marginBottom: 20,
   },
   row: {
@@ -216,10 +231,9 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 24,
   },
   selectedCell: {
-    backgroundColor: '#e3f2fd',
+    backgroundColor: '#BBDEFB',
   },
   cellText: {
     fontSize: 24,
@@ -228,39 +242,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginBottom: 20,
   },
   numberButton: {
     width: 50,
     height: 50,
     margin: 5,
-    backgroundColor: '#4ECDC4',
+    backgroundColor: '#4CAF50',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  usedNumber: {
+    backgroundColor: '#9E9E9E',
+  },
   numberText: {
-    fontSize: 20,
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: 'bold',
+    fontSize: 18,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20,
+    marginTop: 20,
   },
   button: {
-    backgroundColor: '#4ECDC4',
+    backgroundColor: '#4CAF50',
     padding: 10,
-    borderRadius: 5,
-    minWidth: 100,
+    borderRadius: 10,
     alignItems: 'center',
-  },
-  resetButton: {
-    backgroundColor: '#FF6B6B',
+    minWidth: 100,
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
   },

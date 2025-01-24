@@ -1,40 +1,90 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import Svg, { Circle, Line, Text as SvgText, Rect } from 'react-native-svg';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, Animated } from 'react-native';
+import Svg, { Circle, Line, Rect } from 'react-native-svg';
 
 const ProfileScreen = () => {
   const [points, setPoints] = useState([]);
-  const [showResult, setShowResult] = useState(false);
+  const [level, setLevel] = useState(1); // Başlangıç seviyesi
+  const [progress, setProgress] = useState(0);
+  const [animation] = useState(new Animated.Value(0));
 
-  // Koordinat sistemi özellikleri
   const GRID_SIZE = 300;
   const GRID_STEP = 30;
   const MARGIN = 50;
 
+  // Seviyeye göre hedef noktalar oluştur
+  const generateTargetPoints = (level) => {
+    const targets = [];
+    for (let i = 0; i < level * 5; i++) {
+      const x = Math.floor(Math.random() * 11) - 5; // -5 ile 5 arasında rastgele x
+      const y = Math.floor(Math.random() * 11) - 5; // -5 ile 5 arasında rastgele y
+      if (!targets.some((point) => point.x === x && point.y === y)) {
+        targets.push({ x, y });
+      }
+    }
+    return targets;
+  };
+
+  const [targetPoints, setTargetPoints] = useState(generateTargetPoints(level));
+
+  // Renk geçiş animasyonu
+  const triggerAnimation = () => {
+    Animated.sequence([
+      Animated.timing(animation, { toValue: 1, duration: 300, useNativeDriver: false }),
+      Animated.timing(animation, { toValue: 0, duration: 300, useNativeDriver: false }),
+    ]).start();
+  };
+
+  const animatedBackgroundColor = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#81D4FA', '#FFCDD2'], // Pepe mavisi ve açık pembe
+  });
+
   const handlePress = (evt) => {
     const { locationX, locationY } = evt.nativeEvent;
-    
-    // Koordinat sistemine göre pozisyonu hesapla
-    const x = Math.round((locationX - MARGIN - GRID_SIZE/2) / GRID_STEP) * GRID_STEP + GRID_SIZE/2 + MARGIN;
-    const y = Math.round((locationY - MARGIN - GRID_SIZE/2) / GRID_STEP) * GRID_STEP + GRID_SIZE/2 + MARGIN;
-    
-    // Sınırlar içinde mi kontrol et
-    if (locationX >= MARGIN && locationX <= GRID_SIZE + MARGIN &&
-        locationY >= MARGIN && locationY <= GRID_SIZE + MARGIN) {
-      setPoints([...points, { x, y }]);
+
+    // Hesaplanan koordinatlar
+    const x = Math.round((locationX - MARGIN - GRID_SIZE / 2) / GRID_STEP);
+    const y = Math.round((-(locationY - MARGIN - GRID_SIZE / 2)) / GRID_STEP);
+
+    // Noktanın hedefte olup olmadığını kontrol et
+    const isTargetPoint = targetPoints.some((point) => point.x === x && point.y === y);
+
+    if (isTargetPoint) {
+      if (!points.some((point) => point.x === x && point.y === y)) {
+        setPoints([...points, { x, y }]);
+        setProgress(progress + 1);
+        triggerAnimation();
+
+        if (points.length + 1 === targetPoints.length) {
+          Alert.alert('Tebrikler!', `Seviye ${level} tamamlandı! 🎉`, [
+            {
+              text: 'Sonraki Seviye',
+              onPress: () => {
+                const newLevel = level + 1;
+                setLevel(newLevel);
+                setTargetPoints(generateTargetPoints(newLevel));
+                setPoints([]);
+                setProgress(0);
+              },
+            },
+          ]);
+        }
+      }
+    } else {
+      Alert.alert('Yanlış Nokta!', 'Bu nokta hedef değil!');
     }
   };
 
   const resetPoints = () => {
     setPoints([]);
-    setShowResult(false);
+    setProgress(0);
   };
 
-  // Koordinat çizgileri oluşturma
   const createGridLines = () => {
     const lines = [];
-    
-    // Yatay çizgiler
+
+    // Yatay ve dikey çizgiler
     for (let i = 0; i <= GRID_SIZE; i += GRID_STEP) {
       lines.push(
         <Line
@@ -43,71 +93,37 @@ const ProfileScreen = () => {
           y1={i + MARGIN}
           x2={GRID_SIZE + MARGIN}
           y2={i + MARGIN}
-          stroke="#ddd"
+          stroke="#E0E0E0"
           strokeWidth="1"
-        />
-      );
-      // Y ekseni değerleri
-      if (i !== GRID_SIZE/2) {
-        lines.push(
-          <SvgText
-            key={`yt${i}`}
-            x={MARGIN - 20}
-            y={i + MARGIN + 5}
-            fill="#666"
-            fontSize="12"
-          >
-            {Math.round((GRID_SIZE/2 - i) / GRID_STEP)}
-          </SvgText>
-        );
-      }
-    }
-
-    // Dikey çizgiler
-    for (let i = 0; i <= GRID_SIZE; i += GRID_STEP) {
-      lines.push(
+        />,
         <Line
           key={`v${i}`}
           x1={i + MARGIN}
           y1={MARGIN}
           x2={i + MARGIN}
           y2={GRID_SIZE + MARGIN}
-          stroke="#ddd"
+          stroke="#E0E0E0"
           strokeWidth="1"
         />
       );
-      // X ekseni değerleri
-      if (i !== GRID_SIZE/2) {
-        lines.push(
-          <SvgText
-            key={`xt${i}`}
-            x={i + MARGIN - 5}
-            y={GRID_SIZE + MARGIN + 20}
-            fill="#666"
-            fontSize="12"
-          >
-            {Math.round((i - GRID_SIZE/2) / GRID_STEP)}
-          </SvgText>
-        );
-      }
     }
 
-    // X ve Y eksenleri (kalın çizgiler)
+    // Ana eksenler
     lines.push(
       <Line
         key="x-axis"
         x1={MARGIN}
-        y1={GRID_SIZE/2 + MARGIN}
+        y1={GRID_SIZE / 2 + MARGIN}
         x2={GRID_SIZE + MARGIN}
-        y2={GRID_SIZE/2 + MARGIN}
+        y2={GRID_SIZE / 2 + MARGIN}
         stroke="#000"
         strokeWidth="2"
       />,
       <Line
         key="y-axis"
-        x1={GRID_SIZE/2 + MARGIN}
+        x1={GRID_SIZE / 2 + MARGIN}
         y1={MARGIN}
-        x2={GRID_SIZE/2 + MARGIN}
+        x2={GRID_SIZE / 2 + MARGIN}
         y2={GRID_SIZE + MARGIN}
         stroke="#000"
         strokeWidth="2"
@@ -118,132 +134,97 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Koordinat Sistemi</Text>
-        <Text style={styles.subtitle}>İşaretlemeniz gereken noktalar:</Text>
-        
-        <View style={styles.targetPoints}>
-          <Text style={styles.pointText}>1. (0, 5)</Text>
-          <Text style={styles.pointText}>2. (3, 2)</Text>
-          <Text style={styles.pointText}>3. (5, 0)</Text>
-          <Text style={styles.pointText}>4. (3, -2)</Text>
-          <Text style={styles.pointText}>5. (2, -4)</Text>
-          <Text style={styles.pointText}>6. (0, -3)</Text>
-          <Text style={styles.pointText}>7. (-2, -4)</Text>
-          <Text style={styles.pointText}>8. (-3, -2)</Text>
-          <Text style={styles.pointText}>9. (-5, 0)</Text>
-          <Text style={styles.pointText}>10. (-3, 2)</Text>
-        </View>
+    <Animated.View style={[styles.container, { backgroundColor: animatedBackgroundColor }]}>
+      <ScrollView>
+        <View style={styles.content}>
+          <Text style={styles.title}>🎯 Koordinat Sistemi Oyunu</Text>
+          <Text style={styles.subtitle}>Seviye: {level}</Text>
+          <View style={styles.progressContainer}>
+            <Text style={styles.progressText}>
+              İlerleme: {progress}/{targetPoints.length}
+            </Text>
+          </View>
 
-        <View style={styles.gameContainer}>
-          <Svg 
-            height={GRID_SIZE + MARGIN * 2} 
-            width={GRID_SIZE + MARGIN * 2}
-            onPress={handlePress}
-          >
-            {/* Tıklanabilir alan için şeffaf dikdörtgen */}
-            <Rect
-              x={MARGIN}
-              y={MARGIN}
-              width={GRID_SIZE}
-              height={GRID_SIZE}
-              fill="transparent"
-              onPress={handlePress}
-            />
-            
-            {createGridLines()}
-
-            {/* Noktalar arası çizgiler */}
-            {points.map((point, index) => {
-              if (index > 0) {
-                const previousPoint = points[index - 1];
-                return (
-                  <Line
-                    key={`line${index}`}
-                    x1={previousPoint.x}
-                    y1={previousPoint.y}
-                    x2={point.x}
-                    y2={point.y}
-                    stroke="#4ECDC4"
-                    strokeWidth="2"
-                  />
-                );
-              }
-            })}
-
-            {/* Noktalar */}
-            {points.map((point, index) => (
-              <Circle
-                key={`point${index}`}
-                cx={point.x}
-                cy={point.y}
-                r="5"
-                fill="#FF6B6B"
+          <View style={styles.gameContainer}>
+            <Svg height={GRID_SIZE + MARGIN * 2} width={GRID_SIZE + MARGIN * 2} onPress={handlePress}>
+              <Rect
+                x={MARGIN}
+                y={MARGIN}
+                width={GRID_SIZE}
+                height={GRID_SIZE}
+                fill="transparent"
+                onPress={handlePress}
               />
-            ))}
-          </Svg>
-        </View>
+              {createGridLines()}
 
-        <View style={styles.buttonContainer}>
+              {/* Hedef noktalar */}
+              {targetPoints.map((point, index) => (
+                <Circle
+                  key={`target-${index}`}
+                  cx={point.x * GRID_STEP + GRID_SIZE / 2 + MARGIN}
+                  cy={-point.y * GRID_STEP + GRID_SIZE / 2 + MARGIN}
+                  r="5"
+                  fill="#4CAF50"
+                />
+              ))}
+
+              {/* Kullanıcı tarafından işaretlenen noktalar */}
+              {points.map((point, index) => (
+                <Circle
+                  key={`point-${index}`}
+                  cx={point.x * GRID_STEP + GRID_SIZE / 2 + MARGIN}
+                  cy={-point.y * GRID_STEP + GRID_SIZE / 2 + MARGIN}
+                  r="7"
+                  fill="#FF6B6B"
+                />
+              ))}
+            </Svg>
+          </View>
+
           <TouchableOpacity style={styles.resetButton} onPress={resetPoints}>
             <Text style={styles.buttonText}>Temizle</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.pointsList}>
-          <Text style={styles.pointsTitle}>İşaretlediğiniz Noktalar:</Text>
-          {points.map((point, index) => (
-            <Text key={index} style={styles.pointText}>
-              Nokta {index + 1}: ({Math.round((point.x - GRID_SIZE/2 - MARGIN) / GRID_STEP)}, 
-              {Math.round(-(point.y - GRID_SIZE/2 - MARGIN) / GRID_STEP)})
-            </Text>
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
   },
   content: {
     padding: 20,
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
+    color: '#333',
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#666',
     marginBottom: 10,
-    textAlign: 'center',
   },
-  targetPoints: {
-    width: '100%',
-    backgroundColor: '#e8f5e9',
-    padding: 15,
-    borderRadius: 10,
+  progressContainer: {
     marginBottom: 20,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    backgroundColor: '#E3F2FD',
+    padding: 10,
+    borderRadius: 10,
+  },
+  progressText: {
+    fontSize: 16,
+    color: '#333',
   },
   gameContainer: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#FFF',
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
-  },
-  buttonContainer: {
-    width: '100%',
-    marginBottom: 20,
+    elevation: 3,
   },
   resetButton: {
     backgroundColor: '#FF6B6B',
@@ -255,20 +236,6 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  pointsList: {
-    width: '100%',
-    padding: 10,
-  },
-  pointsTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  pointText: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
   },
 });
 

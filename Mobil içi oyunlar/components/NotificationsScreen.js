@@ -1,40 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ImageBackground, Animated } from 'react-native';
 
 const NotificationsScreen = () => {
-  // Sorular ve cevaplar
   const questions = [
-    { 
-      question: 'Kadıköy\'de trene kaç kişi bindi, kaç kişi indi?',
-      answer: 8 - 3 + 15 // 8 bindi, 3 indi, başlangıçta 15 kişi vardı
-    },
-    {
-      question: 'Kartal\'da trene kaç kişi bindi, kaç kişi indi?',
-      answer: 12 - 5 + 15 // 12 bindi, 5 indi, başlangıçta 15 kişi vardı
-    },
-    {
-      question: 'Pendik\'te trene kaç kişi bindi, kaç kişi indi?',
-      answer: 6 - 10 + 15 // 6 bindi, 10 indi, başlangıçta 15 kişi vardı
-    },
-    {
-      question: 'Tuzla\'da trene kaç kişi bindi, kaç kişi indi?',
-      answer: 4 - 7 + 15 // 4 bindi, 7 indi, başlangıçta 15 kişi vardı
-    },
-    {
-      question: 'Trende toplam kaç kişi kaldı?',
-      answer: 15 + 8 - 3 + 12 - 5 + 6 - 10 + 4 - 7 // Toplam kişi sayısını hesaplıyoruz
-    }
+    { question: 'Kadıköy\'de trene kaç kişi bindi, kaç kişi indi?', answer: 8 - 3 + 15 },
+    { question: 'Kartal\'da trene kaç kişi bindi, kaç kişi indi?', answer: 12 - 5 + 15 },
+    { question: 'Pendik\'te trene kaç kişi bindi, kaç kişi indi?', answer: 6 - 10 + 15 },
+    { question: 'Tuzla\'da trene kaç kişi bindi, kaç kişi indi?', answer: 4 - 7 + 15 },
+    { question: 'Trende toplam kaç kişi kaldı?', answer: 15 + 8 - 3 + 12 - 5 + 6 - 10 + 4 - 7 },
   ];
 
-  // State
   const [userAnswer, setUserAnswer] = useState('');
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Mevcut soruyu takip et
-  const [showResult, setShowResult] = useState(false); // Cevap kontrolü
-  const [feedbackColor, setFeedbackColor] = useState(''); // Cevaba göre renk
-  const [showNextButton, setShowNextButton] = useState(false); // Sonraki soruya geçiş
-  const [correctAnswers, setCorrectAnswers] = useState(0); // Doğru cevap sayısı
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [feedbackColor, setFeedbackColor] = useState('');
+  const [showNextButton, setShowNextButton] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
 
-  // Soruyu kontrol et
+  const backgroundColor = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(backgroundColor, { toValue: 1, duration: 3000, useNativeDriver: false }),
+        Animated.timing(backgroundColor, { toValue: 0, duration: 3000, useNativeDriver: false }),
+      ])
+    ).start();
+  }, []);
+
+  const animatedBackgroundColor = backgroundColor.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#4ECDC4', '#FF6B6B'],
+  });
+
   const checkAnswer = () => {
     const correctAnswer = questions[currentQuestionIndex].answer;
     if (parseInt(userAnswer) === correctAnswer) {
@@ -49,7 +47,6 @@ const NotificationsScreen = () => {
     }
   };
 
-  // Sonraki soruya geç
   const nextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -63,7 +60,6 @@ const NotificationsScreen = () => {
     }
   };
 
-  // Oyunu sıfırlamak
   const resetGame = () => {
     setCurrentQuestionIndex(0);
     setUserAnswer('');
@@ -74,85 +70,101 @@ const NotificationsScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Tren Yolculuğu</Text>
+    <ImageBackground
+      source={{ uri: 'https://your-image-url.com/train-background.jpg' }} // Tren arka plan resminizi buraya ekleyin
+      style={styles.backgroundImage}
+    >
+      <Animated.View style={[styles.overlay, { backgroundColor: animatedBackgroundColor }]} />
+      <ScrollView style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.title}>🚂 Tren Yolculuğu Yarışması</Text>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>
-            • Trene başlangıçta 15 kişi bindi{'\n'}
-            • Kadıköy'de 8 kişi bindi, 3 kişi indi{'\n'}
-            • Kartal'da 12 kişi bindi, 5 kişi indi{'\n'}
-            • Pendik'te 6 kişi bindi, 10 kişi indi{'\n'}
-            • Tuzla'da 4 kişi bindi, 7 kişi indi
-          </Text>
-        </View>
-
-        <View style={styles.answerContainer}>
-          <Text style={styles.question}>
-            {questions[currentQuestionIndex].question}
-          </Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            value={userAnswer}
-            onChangeText={setUserAnswer}
-            placeholder="Cevabınızı yazın"
-          />
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={checkAnswer}
-          >
-            <Text style={styles.buttonText}>Kontrol Et</Text>
-          </TouchableOpacity>
-        </View>
-
-        {showResult && (
-          <View style={styles.resultContainer}>
-            <Text style={[styles.resultText, { color: feedbackColor }]}>
-              {parseInt(userAnswer) === questions[currentQuestionIndex].answer 
-                ? "Doğru cevap! ✅" 
-                : "Yanlış cevap! ❌\nDoğru cevap: " + questions[currentQuestionIndex].answer}
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>
+              • Trene başlangıçta 15 kişi bindi{'\n'}
+              • Kadıköy'de 8 kişi bindi, 3 kişi indi{'\n'}
+              • Kartal'da 12 kişi bindi, 5 kişi indi{'\n'}
+              • Pendik'te 6 kişi bindi, 10 kişi indi{'\n'}
+              • Tuzla'da 4 kişi bindi, 7 kişi indi
             </Text>
-
-            {showNextButton && (
-              <TouchableOpacity 
-                style={styles.nextButton}
-                onPress={nextQuestion}
-              >
-                <Text style={styles.buttonText}>Sonraki Soru</Text>
-              </TouchableOpacity>
-            )}
-
-            {!showNextButton && currentQuestionIndex < questions.length - 1 && (
-              <TouchableOpacity 
-                style={styles.resetButton}
-                onPress={resetGame}
-              >
-                <Text style={styles.buttonText}>Tekrar Dene</Text>
-              </TouchableOpacity>
-            )}
           </View>
-        )}
-      </View>
-    </ScrollView>
+
+          <View style={styles.answerContainer}>
+            <Text style={styles.question}>
+              {questions[currentQuestionIndex].question}
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={userAnswer}
+              onChangeText={setUserAnswer}
+              placeholder="Cevabınızı yazın"
+            />
+            <TouchableOpacity 
+              style={styles.button}
+              onPress={checkAnswer}
+            >
+              <Text style={styles.buttonText}>Kontrol Et</Text>
+            </TouchableOpacity>
+          </View>
+
+          {showResult && (
+            <View style={styles.resultContainer}>
+              <Text style={[styles.resultText, { color: feedbackColor }]}>
+                {parseInt(userAnswer) === questions[currentQuestionIndex].answer 
+                  ? "Doğru cevap! ✅" 
+                  : "Yanlış cevap! ❌\nDoğru cevap: " + questions[currentQuestionIndex].answer}
+              </Text>
+
+              {showNextButton && (
+                <TouchableOpacity 
+                  style={styles.nextButton}
+                  onPress={nextQuestion}
+                >
+                  <Text style={styles.buttonText}>Sonraki Soru</Text>
+                </TouchableOpacity>
+              )}
+
+              {!showNextButton && currentQuestionIndex < questions.length - 1 && (
+                <TouchableOpacity 
+                  style={styles.resetButton}
+                  onPress={resetGame}
+                >
+                  <Text style={styles.buttonText}>Tekrar Dene</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.3,
   },
   content: {
     padding: 20,
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 10,
+    margin: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#00796b', // Başlık yeşil
+    color: '#00796b',
   },
   infoContainer: {
     width: '100%',
@@ -176,7 +188,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
-    backgroundColor: '#e0f7fa', // Açık yeşil
+    backgroundColor: '#e0f7fa',
     padding: 15,
     borderRadius: 10,
     fontSize: 16,
@@ -184,7 +196,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#4ECDC4', // Yeşil
+    backgroundColor: '#4ECDC4',
     padding: 15,
     borderRadius: 10,
     width: '80%',
@@ -207,14 +219,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   nextButton: {
-    backgroundColor: '#4ECDC4', // Yeşil
+    backgroundColor: '#4ECDC4',
     padding: 15,
     borderRadius: 10,
     width: '80%',
     marginBottom: 10,
   },
   resetButton: {
-    backgroundColor: '#FF6B6B', // Kırmızı
+    backgroundColor: '#FF6B6B',
     padding: 15,
     borderRadius: 10,
     width: '80%',
